@@ -46,5 +46,23 @@ async function replaceProduct(id,product){
     return data[idx]
 }
 
+async function updateProduct(id,product){
+    const data=await getProducts()
+    const idx=data.findIndex((x)=>x.id==id)
+    if (idx==-1){
+        return null
+    }
+    data[idx]={
+        ...data[idx],
+        ...product
+    }
 
-module.exports = {fetchProducts,fetchProductById,addProduct,deleteProduct,replaceProduct}
+
+    await writeProducts(data)
+    return data[idx]
+}
+
+
+
+
+module.exports = {fetchProducts,fetchProductById,addProduct,deleteProduct,replaceProduct,updateProduct}
