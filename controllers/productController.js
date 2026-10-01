@@ -1,5 +1,5 @@
-const {fetchProducts,fetchProductById}=require('../services/productService')
-const {setCache}=require('../middleware/cache')
+const {fetchProducts,fetchProductById,addProduct}=require('../services/productService')
+const {setCache,deleteCache}=require('../middleware/cache')
 
 async function getProducts(req, res){
     const products = await fetchProducts()
@@ -20,4 +20,17 @@ async function getProductById(req, res) {
     res.json(product)
 }
 
-module.exports = {getProducts,getProductById}
+
+async function createProduct(req,res) {
+    try{
+        const {name,price}=req.body
+        const newProduct={name,price}
+        deleteCache('/products')
+        const result=await addProduct(newProduct)
+        res.status(201).json(result)
+    } catch(err){
+        res.status(500).json({error:err.message})
+    }
+}
+
+module.exports = {getProducts,getProductById,createProduct}

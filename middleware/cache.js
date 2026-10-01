@@ -20,4 +20,9 @@ function setCache(key, data) {
         createdAt:Date.now()
     }
 }
-module.exports={cacheMiddleware,setCache}
+
+
+function deleteCache(key){
+    delete cache['/products/']
+}
+module.exports={cacheMiddleware,setCache,deleteCache}

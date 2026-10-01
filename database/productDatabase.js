@@ -13,5 +13,9 @@ async function getProudctById(id) {
     return data.find((x)=>x.id==id)
 }
 
+async function writeProducts(data){
+    await fs.writeFile(filePath,JSON.stringify(data,null,2))
+}
 
-module.exports={getProducts,getProudctById}
+
+module.exports={getProducts,getProudctById,writeProducts}
