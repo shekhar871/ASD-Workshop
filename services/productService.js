@@ -18,4 +18,16 @@ async function addProduct(product){
     await writeProducts(data)
     return toPush
 }
-module.exports = {fetchProducts,fetchProductById,addProduct}
+
+
+async function deleteProduct(id){
+    const data=await getProducts()
+    const toDelete=data.find((x)=>x.id==id)
+    if (toDelete){
+        await writeProducts(data.filter((x)=>x.id!=id))
+        return toDelete
+    } else {
+        return null
+    }
+}
+module.exports = {fetchProducts,fetchProductById,addProduct,deleteProduct}

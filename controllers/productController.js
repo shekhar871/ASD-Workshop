@@ -1,4 +1,4 @@
-const {fetchProducts,fetchProductById,addProduct}=require('../services/productService')
+const {fetchProducts,fetchProductById,addProduct,deleteProduct}=require('../services/productService')
 const {setCache,deleteCache}=require('../middleware/cache')
 
 async function getProducts(req, res){
@@ -25,12 +25,30 @@ async function createProduct(req,res) {
     try{
         const {name,price}=req.body
         const newProduct={name,price}
-        deleteCache('/products')
         const result=await addProduct(newProduct)
+        deleteCache('/products/')
+        deleteCache('/products')
         res.status(201).json(result)
     } catch(err){
         res.status(500).json({error:err.message})
     }
 }
 
-module.exports = {getProducts,getProductById,createProduct}
+async function removeProduct(req,res){
+    const id=req.params.id
+    try{
+        const result=await deleteProduct(id)
+        if (result!=null){
+            deleteCache('/products')
+            deleteCache('/products/')
+            deleteCache(`/products/${id}`)
+            deleteCache(`/products/${id}/`)
+            res.json(result)
+        } else {
+            res.status(404).json({error:"Couldnt find item"})
+        }
+    } catch(err){
+        res.status(500).json({error:err.message})
+    }
+}
+module.exports = {getProducts,getProductById,createProduct,removeProduct}

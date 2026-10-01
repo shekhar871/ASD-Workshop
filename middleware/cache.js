@@ -23,6 +23,6 @@ function setCache(key, data) {
 
 
 function deleteCache(key){
-    delete cache['/products/']
+    delete cache[key]
 }
 module.exports={cacheMiddleware,setCache,deleteCache}
