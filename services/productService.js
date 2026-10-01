@@ -30,4 +30,21 @@ async function deleteProduct(id){
         return null
     }
 }
-module.exports = {fetchProducts,fetchProductById,addProduct,deleteProduct}
+
+
+async function replaceProduct(id,product){
+    const data=await getProducts()
+    const idx=data.findIndex((x)=>x.id==id)
+    if (idx==-1){
+        return null
+    }
+    data[idx]={
+        id,
+        ...product
+    }
+    await writeProducts(data)
+    return data[idx]
+}
+
+
+module.exports = {fetchProducts,fetchProductById,addProduct,deleteProduct,replaceProduct}
