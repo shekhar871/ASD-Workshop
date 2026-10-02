@@ -7,10 +7,12 @@ function cacheMiddleware(req, res, next) {
     if (cached){
         const age=Date.now()-cached.createdAt
         if (age<TTL){
+            res.setHeader('X-Cache', 'HIT')
             return res.json(cached.data)
         }
         delete cache[key]
     }
+    res.setHeader('X-Cache', 'MISS')
     next()
 }
 
